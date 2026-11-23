@@ -281,6 +281,9 @@ Aparece na seção do app **só no desktop**, e essa condição é a regra: num 
 
 O selo mostrado é o `badge-*.svg` do próprio projeto, não a arte baixada da loja. O ícone do app já é o selo da marca, então a versão vetorial é a mesma imagem sem o peso de um PNG — e sem o canto arredondado que a loja aplica. Ele aparece dentro de uma moldura de 1px **reta**, e essa é a piada silenciosa do bloco: a loja arredonda, nós não.
 
+### Perguntas frequentes
+`PerguntasFrequentes`, na página Contato. Mesmo desenho da tabela de horários: lista entre filetes de 1px em Areia Lavada, pergunta em Title (Cormorant 300) e resposta em Body, em `max-w-3xl`, sempre em campo claro. Cada item é um `<details>` nativo — abre sem JavaScript e a resposta está no HTML desde o início. O sinal de abrir é um "+" desenhado em dois traços de 1px no barro do campo, nunca glifo; aberto, o traço vertical recolhe em 500ms e sobra o "−". O texto mora em `src/data/perguntas.js`, a mesma fonte do JSON-LD `FAQPage`.
+
 ### Grain
 Camada de textura sobre campos escuros, a 3% de opacidade, sempre `aria-hidden`. É o que impede que uma seção navy inteira leia como bloco chapado de cor.
 

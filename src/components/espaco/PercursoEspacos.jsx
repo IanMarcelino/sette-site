@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
-import { motion, useInView, useReducedMotion, AnimatePresence } from 'framer-motion'
+import { motion, useInView, AnimatePresence } from 'framer-motion'
 import { useMediaQuery } from '../../hooks/useMediaQuery'
 import { espacos } from '../../data/espacos'
+import { useMovimentoReduzido } from '../../hooks/useMovimentoReduzido'
 
 const ease = [0.25, 0.1, 0.25, 1]
 
@@ -84,7 +85,7 @@ function Parada({ espaco, indice, onAtivar, ultimo }) {
 /** Desktop: a prancha fica parada e o texto avança por cima do percurso. */
 function PercursoFixo() {
   const [ativo, setAtivo] = useState(0)
-  const semMovimento = useReducedMotion()
+  const semMovimento = useMovimentoReduzido()
   const atual = espacos[ativo]
 
   return (

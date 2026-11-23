@@ -1,41 +1,46 @@
-import { StrictMode, lazy, Suspense } from 'react'
-import { createRoot } from 'react-dom/client'
-import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom'
+import { StrictMode } from 'react'
+import { createRoot, hydrateRoot } from 'react-dom/client'
+import { createBrowserRouter, matchRoutes, RouterProvider } from 'react-router-dom'
 import './index.css'
-import Layout from './components/Layout'
-import Home from './pages/Home'
+import { rotas } from './rotas'
 
-// A Home entra estática — é a porta de entrada e não deve pagar um round trip
-// extra. As páginas internas viram chunks próprios, carregados na navegação.
-const OClube = lazy(() => import('./pages/OClube'))
-const OEspaco = lazy(() => import('./pages/OEspaco'))
-const Experiencia = lazy(() => import('./pages/Experiencia'))
-const Contato = lazy(() => import('./pages/Contato'))
-// Destino do QR: redireciona para a loja do aparelho. Chunk próprio porque
-// quase ninguém chega por aqui pelo site — chega pela câmera do celular.
-const BaixarApp = lazy(() => import('./pages/BaixarApp'))
+/**
+ * Em produção o #root chega preenchido pelo build (scripts/prerender.mjs):
+ * cada rota tem o próprio HTML, para buscadores e IAs que não executam
+ * JavaScript. O React *hidrata* esse HTML — reaproveita o DOM que já está na
+ * tela e só liga os eventos — em vez de apagá-lo e desenhar de novo. O
+ * visitante vê a página no primeiro paint, sem piscar.
+ *
+ * Para a hidratação conferir com o HTML, o primeiro render precisa ser idêntico
+ * ao do build. Por isso:
+ * - o módulo da página de entrada é resolvido *antes* de hidratar (é o
+ *   procedimento documentado do React Router para rotas `lazy` com SSR);
+ * - o que depende do aparelho (media queries, movimento reduzido, plataforma)
+ *   começa no valor do servidor e se corrige logo depois — ver
+ *   `useMediaQuery`, `useMovimentoReduzido` e `usePlataforma`.
+ *
+ * No `npm run dev` não há pré-render — o #root chega vazio — e o app é montado
+ * do zero.
+ */
+async function iniciar() {
+  const raiz = document.getElementById('root')
 
-// Placeholder na cor da navbar: cobre o intervalo entre rotas sem piscar branco.
-const carregando = <div className="min-h-svh bg-navy" aria-busy="true" aria-live="polite" />
-const suspenso = (el) => <Suspense fallback={carregando}>{el}</Suspense>
+  const pendentes = matchRoutes(rotas, window.location)?.filter((m) => m.route.lazy) ?? []
+  await Promise.all(
+    pendentes.map(async (m) => {
+      const modulo = await m.route.lazy()
+      Object.assign(m.route, { ...modulo, lazy: undefined })
+    }),
+  )
 
-const router = createBrowserRouter([
-  {
-    element: <Layout />,
-    children: [
-      { path: '/', element: <Home /> },
-      { path: '/o-clube', element: suspenso(<OClube />) },
-      { path: '/o-espaco', element: suspenso(<OEspaco />) },
-      { path: '/experiencia', element: suspenso(<Experiencia />) },
-      { path: '/contato', element: suspenso(<Contato />) },
-      { path: '/app', element: suspenso(<BaixarApp />) },
-      { path: '*', element: <Navigate to="/" replace /> },
-    ],
-  },
-])
+  const app = (
+    <StrictMode>
+      <RouterProvider router={createBrowserRouter(rotas)} />
+    </StrictMode>
+  )
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <RouterProvider router={router} />
-  </StrictMode>,
-)
+  if (raiz.firstElementChild) hydrateRoot(raiz, app)
+  else createRoot(raiz).render(app)
+}
+
+iniciar()

@@ -1,5 +1,6 @@
-import { motion, useReducedMotion } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { prancha } from '../../data/pranchas'
+import { useMovimentoReduzido } from '../../hooks/useMovimentoReduzido'
 
 const ease = [0.25, 0.1, 0.25, 1]
 const abertura = prancha('abertura')
@@ -12,7 +13,7 @@ const TAMANHOS = '(min-width: 1024px) 700px, (min-width: 640px) calc(100vw - 5re
 // `cream` e não `paper` porque o papel do original é quase branco — sobre o
 // creme quente das axonométricas a borda da folha aparecia como retângulo.
 export default function AberturaEspaco() {
-  const semMovimento = useReducedMotion()
+  const semMovimento = useMovimentoReduzido()
 
   return (
     <section className="relative bg-cream overflow-hidden">

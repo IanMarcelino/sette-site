@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useSyncExternalStore } from 'react'
 
 // Escolhe layout em JavaScript quando duas variantes não podem coexistir no DOM.
 //
@@ -7,20 +7,25 @@ import { useEffect, useState } from 'react'
 // documento quebra a navegação: o navegador resolve `#tenis` para a primeira
 // ocorrência, mesmo que ela esteja dentro de um `display:none`.
 //
-// O valor inicial é lido de forma síncrona, antes do primeiro paint, então não
-// há troca visível de layout na entrada.
+// O HTML de cada página sai pronto do build, onde não existe tela para
+// consultar: lá a resposta é sempre `false`. `useSyncExternalStore` é o que
+// torna isso seguro — na hidratação o React usa o mesmo `false` do servidor
+// (o DOM confere com o HTML recebido) e, logo em seguida, re-renderiza com o
+// valor real do aparelho. Ler `matchMedia` direto no estado inicial faria o
+// primeiro render do navegador divergir do HTML.
 export function useMediaQuery(query) {
-  const [combina, setCombina] = useState(
-    () => typeof window !== 'undefined' && window.matchMedia(query).matches,
+  const assinar = useCallback(
+    (avisar) => {
+      const mq = window.matchMedia(query)
+      mq.addEventListener('change', avisar)
+      return () => mq.removeEventListener('change', avisar)
+    },
+    [query],
   )
 
-  useEffect(() => {
-    const mq = window.matchMedia(query)
-    const aoMudar = (e) => setCombina(e.matches)
-    setCombina(mq.matches)
-    mq.addEventListener('change', aoMudar)
-    return () => mq.removeEventListener('change', aoMudar)
-  }, [query])
-
-  return combina
+  return useSyncExternalStore(
+    assinar,
+    () => window.matchMedia(query).matches,
+    () => false,
+  )
 }

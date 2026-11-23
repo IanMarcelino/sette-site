@@ -1,10 +1,11 @@
-import { motion, useMotionValue, animate, useInView, useReducedMotion } from 'framer-motion'
+import { motion, useMotionValue, animate, useInView } from 'framer-motion'
 import { useEffect, useState, useRef } from 'react'
 import { useScrollReveal } from '../hooks/useScrollReveal'
 import Grain from './Grain'
+import { useMovimentoReduzido } from '../hooks/useMovimentoReduzido'
 
 function Counter({ target, suffix = '', duration = 2 }) {
-  const semMovimento = useReducedMotion()
+  const semMovimento = useMovimentoReduzido()
   const [count, setCount] = useState(semMovimento ? target : 0)
   const counterRef = useRef(null)
   const inView = useInView(counterRef, { once: true, amount: 0.5 })

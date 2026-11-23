@@ -1,5 +1,6 @@
-import { motion, useReducedMotion } from 'framer-motion'
+import { motion } from 'framer-motion'
 import Grain from './Grain'
+import { useMovimentoReduzido } from '../hooks/useMovimentoReduzido'
 
 const ease = [0.25, 0.1, 0.25, 1]
 
@@ -66,7 +67,7 @@ const CAMPO = {
 
 export default function AberturaPagina({ campo = 'claro', eyebrow, titulo, texto, imagem }) {
   const c = CAMPO[campo]
-  const semMovimento = useReducedMotion()
+  const semMovimento = useMovimentoReduzido()
 
   return (
     <section className={`relative overflow-hidden ${c.secao}`}>

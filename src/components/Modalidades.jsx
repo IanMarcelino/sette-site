@@ -11,8 +11,10 @@ const modalidades = [
   {
     img: tenis,
     label: 'Tênis',
-    desc: 'Quadras de saibro em padrão internacional, pensadas para performance do quique ao jogo mental.',
-    to: '/o-espaco',
+    desc: 'Quadras de saibro em padrão internacional e aulas com professores certificados, da iniciação à competição.',
+    // Leva às aulas, não às quadras: aula de tênis é o centro da oferta, e o
+    // card de Padel já aponta para O Espaço.
+    to: '/o-clube#aulas',
   },
   {
     img: padel,

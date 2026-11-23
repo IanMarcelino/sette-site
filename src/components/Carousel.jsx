@@ -25,9 +25,10 @@ export default function Carousel() {
   const trackRef = useRef(null)
   // Sem pin, a faixa vira um strip de rolagem horizontal nativa. O conteúdo e a
   // leitura horizontal continuam; o que sai é o sequestro do scroll vertical.
-  const [semPin, setSemPin] = useState(
-    () => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches,
-  )
+  // Começa no valor do HTML pré-renderizado (sem preferência de movimento) e o
+  // `gsap.matchMedia` abaixo corrige logo depois de montar, com o valor real.
+  // Ler `matchMedia` aqui faria a hidratação divergir do HTML.
+  const [semPin, setSemPin] = useState(false)
 
   // Largura de um slide = largura visível da seção, publicada como custom
   // property. É a correção do bug original: `100vw` no CSS não bate com a área

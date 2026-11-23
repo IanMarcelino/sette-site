@@ -1,16 +1,21 @@
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { useScrollReveal } from '../../hooks/useScrollReveal'
+import { urlAgendarAula } from '../../config/clube'
 import Grain from '../Grain'
 
 // Fecho da página.
 //
-// "O Clube" conta a origem do nome e quem ensina, e até aqui não pedia
-// nada de volta. O objetivo do site é que a visita termine com uma quadra
-// encaminhada; esta é a única porta da página para isso. O botão leva a
-// Contato, onde a conversa começa de fato.
+// "O Clube" apresenta quem ensina, e aula de tênis é o centro da oferta do
+// clube. Por isso a ação principal aqui é agendar aula — pelo WhatsApp, que é
+// por onde o clube marca aulas. Reservar quadra continua ao lado, como segunda
+// porta, levando a Contato, onde estão o app e as lojas.
+//
+// O texto antigo dizia que a reserva "não passa por formulário: é conversa".
+// Deixou de ser verdade quando a reserva de quadra foi para o app.
 export default function FechoClube() {
   const [ref, controls] = useScrollReveal(0.25)
+  const agendar = urlAgendarAula()
 
   return (
     <section className="relative py-24 sm:py-32 px-6 bg-navy overflow-hidden" ref={ref}>
@@ -38,16 +43,28 @@ export default function FechoClube() {
         </div>
 
         <p className="text-base text-stone-light/85 font-light leading-relaxed max-w-lg mx-auto font-body text-balance">
-          O Sette atende o público em geral. A reserva não passa por formulário:
-          é conversa, e ela começa aqui.
+          O Sette atende o público em geral. A aula de tênis se agenda pelo
+          WhatsApp; a quadra, pelo app do clube.
         </p>
 
-        <Link
-          to="/contato"
-          className="block w-full text-center sm:inline-block sm:w-auto mt-10 px-9 py-5 sm:py-4 border border-terracotta-on-dark text-terracotta-on-dark text-[0.7rem] tracking-ultra-wide uppercase font-body font-light hover:bg-terracotta-on-dark hover:text-navy active:bg-terracotta-on-dark active:text-navy transition-all duration-500 ease-out [-webkit-tap-highlight-color:transparent]"
-        >
-          Reservar uma quadra
-        </Link>
+        <div className="mt-10 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-4">
+          {agendar && (
+            <a
+              href={agendar}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block text-center px-9 py-5 sm:py-4 bg-terracotta border border-terracotta text-cream text-[0.7rem] tracking-ultra-wide uppercase font-body font-light hover:bg-terracotta-light hover:border-terracotta-light active:bg-terracotta-light active:border-terracotta-light transition-all duration-500 ease-out [-webkit-tap-highlight-color:transparent]"
+            >
+              Agendar uma aula
+            </a>
+          )}
+          <Link
+            to="/contato"
+            className="block text-center px-9 py-5 sm:py-4 border border-terracotta-on-dark text-terracotta-on-dark text-[0.7rem] tracking-ultra-wide uppercase font-body font-light hover:bg-terracotta-on-dark hover:text-navy active:bg-terracotta-on-dark active:text-navy transition-all duration-500 ease-out [-webkit-tap-highlight-color:transparent]"
+          >
+            Reservar uma quadra
+          </Link>
+        </div>
       </motion.div>
 
       <div className="absolute bottom-0 left-0 w-full h-[2px] bg-terracotta" />

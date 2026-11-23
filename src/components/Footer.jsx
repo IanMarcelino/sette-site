@@ -79,7 +79,13 @@ export default function Footer() {
         )}
 
         <div className="mt-8 w-8 h-[2px] bg-terracotta/40 mx-auto" />
-        <p className="mt-6 text-[0.65rem] tracking-[0.2em] text-stone-light/70 font-light font-body">
+        {/* O HTML sai do build com o ano do build; no navegador vale o ano do
+            relógio. Na virada de ano os dois divergem por um instante, e é
+            exatamente o caso que `suppressHydrationWarning` existe para cobrir. */}
+        <p
+          suppressHydrationWarning
+          className="mt-6 text-[0.65rem] tracking-[0.2em] text-stone-light/70 font-light font-body"
+        >
           &copy; {new Date().getFullYear()} Sette Racket Club. Todos os direitos reservados.
         </p>
       </motion.div>

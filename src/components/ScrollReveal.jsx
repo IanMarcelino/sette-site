@@ -1,4 +1,5 @@
-import { motion, useReducedMotion } from 'framer-motion'
+import { motion } from 'framer-motion'
+import { useMovimentoReduzido } from '../hooks/useMovimentoReduzido'
 
 // Sem movimento, cada reveal perde o deslocamento e a escala mas mantém o
 // fade: a hierarquia de entrada continua legível, só não se move no eixo.
@@ -11,7 +12,7 @@ export function ScrollReveal({
   direction = 'up',
   distance = 40,
 }) {
-  const semMovimento = useReducedMotion()
+  const semMovimento = useMovimentoReduzido()
 
   const directionMap = {
     up: { y: distance, x: 0 },
@@ -40,7 +41,7 @@ export function ScrollReveal({
 }
 
 export function FadeIn({ children, className = '', delay = 0, duration = 1 }) {
-  const semMovimento = useReducedMotion()
+  const semMovimento = useMovimentoReduzido()
 
   return (
     <motion.div
@@ -60,7 +61,7 @@ export function FadeIn({ children, className = '', delay = 0, duration = 1 }) {
 }
 
 export function ScaleReveal({ children, className = '', delay = 0 }) {
-  const semMovimento = useReducedMotion()
+  const semMovimento = useMovimentoReduzido()
 
   return (
     <motion.div
@@ -80,7 +81,7 @@ export function ScaleReveal({ children, className = '', delay = 0 }) {
 }
 
 export function LineReveal({ className = '', delay = 0 }) {
-  const semMovimento = useReducedMotion()
+  const semMovimento = useMovimentoReduzido()
 
   return (
     <motion.div

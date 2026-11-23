@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import { useRef } from 'react'
 import { Link } from 'react-router-dom'
 import badgeWhite from '../assets/badge-white.svg'
@@ -11,6 +11,7 @@ import heroRetratoWebp from '../assets/court-aerial.webp'
 import heroPaisagemAvif from '../assets/carousel-2.avif'
 import heroPaisagemWebp from '../assets/carousel-2.webp'
 import Grain from './Grain'
+import { useMovimentoReduzido } from '../hooks/useMovimentoReduzido'
 
 const fade = {
   hidden: { opacity: 0, y: 30 },
@@ -29,7 +30,7 @@ const fadeOnly = {
 
 export default function Hero() {
   const ref = useRef(null)
-  const semMovimento = useReducedMotion()
+  const semMovimento = useMovimentoReduzido()
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ['start start', 'end start'],

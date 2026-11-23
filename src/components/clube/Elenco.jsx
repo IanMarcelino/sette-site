@@ -1,8 +1,15 @@
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { useScrollReveal } from '../../hooks/useScrollReveal'
 import { useCarrossel } from '../../hooks/useCarrossel'
 import { elenco } from '../../data/elenco'
 import Grain from '../Grain'
+import { useMovimentoReduzido } from '../../hooks/useMovimentoReduzido'
+import { urlAgendarAula } from '../../config/clube'
+
+// Formatos de aula. Saem do que as fichas do elenco declaram — aulas
+// individuais e em grupo, crianças e adultos, da iniciação à competição —, não
+// de uma grade comercial: turmas, pacotes e preços não estão registrados.
+const FORMATOS = ['Individuais e em grupo', 'Crianças e adultos', 'Da iniciação à competição']
 
 const ease = [0.25, 0.1, 0.25, 1]
 
@@ -57,17 +64,22 @@ function Retrato({ pessoa, sizes, className, loading, alt }) {
 export default function Elenco() {
   const [ref, controls] = useScrollReveal(0.1)
   const { ativo, sentido, ir, andar, aoTeclar } = useCarrossel(elenco.length)
-  const semMovimento = useReducedMotion()
+  const semMovimento = useMovimentoReduzido()
   const atual = elenco[ativo]
 
   const deslocamento = semMovimento ? 0 : 24 * sentido
   const duracao = semMovimento ? 0 : 0.5
+  const agendar = urlAgendarAula()
 
   return (
+    // `id="aulas"`: destino do card de Tênis na Home e de qualquer link
+    // externo que fale de aula. A seção é onde o clube vende a aula: quem
+    // ensina, em que formatos, e o botão que abre a conversa.
     <section
-      className="relative bg-navy overflow-hidden py-20 sm:py-24 lg:py-28 px-6 sm:px-10"
+      id="aulas"
+      className="relative bg-navy overflow-hidden py-20 sm:py-24 lg:py-28 px-6 sm:px-10 scroll-mt-20"
       aria-roledescription="carrossel"
-      aria-label="Elenco do Sette Racket Club"
+      aria-label="Aulas de tênis e elenco do Sette Racket Club"
       onKeyDown={aoTeclar}
       ref={ref}
     >
@@ -83,16 +95,17 @@ export default function Elenco() {
         >
           <div className="lg:col-span-7">
             <span className="inline-block text-[0.65rem] tracking-ultra-wide uppercase text-terracotta-on-dark font-light font-body mb-6">
-              Quem ensina
+              Aulas de tênis
             </span>
             <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-light text-cream leading-tight text-balance">
-              Elenco Sette Racket Club
+              Quem ensina no Sette
             </h2>
             <div className="w-12 h-[2px] bg-terracotta-on-dark/70 mt-8" />
           </div>
           <p className="lg:col-span-5 text-sm text-stone-light/85 font-light leading-relaxed font-body max-w-md">
-            Cinco profissionais assinam o trabalho de quadra no Sette, do
-            primeiro contato com a raquete à preparação de quem compete.
+            Aulas de tênis no saibro, em Fortaleza. Cinco profissionais assinam
+            o trabalho de quadra no Sette, do primeiro contato com a raquete à
+            preparação de quem compete.
           </p>
         </motion.div>
 
@@ -225,6 +238,36 @@ export default function Elenco() {
             </button>
           ))}
         </motion.nav>
+
+        {/* Fecho comercial da seção: formatos à esquerda, agendamento à
+            direita. Fica depois do trilho para que o botão venha quando o
+            visitante já viu quem ensina. */}
+        <motion.div
+          className="mt-12 sm:mt-14 pt-10 border-t border-cream/15 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8"
+          initial={{ opacity: 0 }}
+          animate={controls}
+          variants={{ visible: { opacity: 1, transition: { duration: 1, delay: 0.45 } } }}
+        >
+          <ul className="flex flex-col sm:flex-row sm:flex-wrap gap-x-8 gap-y-3">
+            {FORMATOS.map((f) => (
+              <li key={f} className="flex items-center gap-3 text-sm text-cream/85 font-light font-body">
+                <span aria-hidden="true" className="w-1.5 h-1.5 border border-terracotta-on-dark/70 rotate-45 flex-shrink-0" />
+                {f}
+              </li>
+            ))}
+          </ul>
+
+          {agendar && (
+            <a
+              href={agendar}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block w-full text-center sm:inline-block sm:w-auto flex-shrink-0 px-9 py-5 sm:py-4 bg-terracotta border border-terracotta text-cream text-[0.7rem] tracking-ultra-wide uppercase font-body font-light hover:bg-terracotta-light hover:border-terracotta-light active:bg-terracotta-light active:border-terracotta-light transition-all duration-500 ease-out [-webkit-tap-highlight-color:transparent]"
+            >
+              Agendar aula pelo WhatsApp
+            </a>
+          )}
+        </motion.div>
       </div>
 
       <div className="absolute bottom-0 left-0 w-full h-[2px] bg-terracotta" />

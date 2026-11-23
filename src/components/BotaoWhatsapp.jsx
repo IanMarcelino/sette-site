@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import { motion, useReducedMotion } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { urlWhatsapp } from '../config/clube'
+import { useMovimentoReduzido } from '../hooks/useMovimentoReduzido'
 
 /**
  * Botão flutuante do WhatsApp.
@@ -37,7 +38,7 @@ function GlifoWhatsapp(props) {
 
 export default function BotaoWhatsapp() {
   const [visivel, setVisivel] = useState(false)
-  const semMovimento = useReducedMotion()
+  const semMovimento = useMovimentoReduzido()
   const { pathname } = useLocation()
   const whats = urlWhatsapp()
 

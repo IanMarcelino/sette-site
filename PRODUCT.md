@@ -32,9 +32,12 @@ O modelo de acesso é o que um clube vizinho não copia de graça: **aberto ao p
 - **Link curto do app:** `setteclub.com/app` — rota do próprio site que detecta o aparelho e redireciona para a loja certa. É o destino do QR e serve para bio de rede social, mensagem e material impresso.
 - **Canal de apoio:** WhatsApp (85) 98557-5252, para quem prefere atendimento humano.
 - **Outros canais:** Instagram @setteracketclub · e-mail contato@setteclub.com
-- **Domínio:** setteclub.com
+- **Domínio:** setteclub.com — a Vercel serve em `www.setteclub.com` (o domínio sem www redireciona). Canonical, sitemap e JSON-LD usam o `www`; a origem fica em `src/seo/paginas.js`.
+- **SEO:** título, descrição e dados estruturados de cada página saem de `src/seo/paginas.js`, que também define as rotas do site (`src/rotas.jsx` só associa componente a caminho; divergência entre os dois quebra o build). O build pré-renderiza cada rota em HTML (`scripts/prerender.mjs`), o navegador hidrata esse HTML em vez de redesenhá-lo, e saem também `sitemap.xml`, `robots.txt` e `llms.txt`. Cada página disputa um assunto próprio: Home o clube, O Clube os professores, O Espaço as quadras, Contato a reserva. As perguntas frequentes (`src/data/perguntas.js`) aparecem em Contato, no JSON-LD `FAQPage` e no `llms.txt` com o mesmo texto. Depois de cada deploy com mudança de conteúdo: `npm run indexnow` (Bing).
 
 ## Capabilities and Constraints
+
+**Aulas de tênis são parte central da oferta** (confirmado pelo clube em novembro de 2026): o clube vende aulas de tênis em Fortaleza, dadas pelo elenco de `src/data/elenco.js`. **A aula se agenda pelo WhatsApp** (também confirmado), com mensagem já preenchida (`urlAgendarAula` em `src/config/clube.js`). No site, as aulas estão na seção do elenco em O Clube (`/o-clube#aulas`, com o botão de agendar), no fecho dessa página, no card de Tênis da Home, numa linha própria em Contato, nas perguntas frequentes e no SEO. Os formatos citados — individuais e em grupo, crianças e adultos, da iniciação à competição — vêm das fichas do elenco; turmas, pacotes e preços não estão registrados. Uma página própria de aulas (`/aulas`) está prevista, ainda não feita.
 
 **Modalidades:** Tênis (saibro) e Padel. Somente essas duas. Beach Tennis chegou a aparecer no site e foi removido em agosto de 2026 por não existir no clube — não reintroduzir sem confirmação.
 
@@ -64,6 +67,8 @@ O que o app promete é o que a ficha das lojas lista — reservas, horários, pr
 **Imagens de detalhe** — `tenis.webp`, `padel.webp`, `obra.webp`, `lifestyle.webp`. Genéricas (bola no saibro, raquete de padel, pá com saibro, jogador). A procedência não está registrada no repositório; tratar como não confirmada até que alguém ateste.
 
 **Marca aplicada** — `clube.webp` e `court-aerial`: o brasão gravado no saibro. É o ativo mais próprio da marca e o único que nenhum concorrente teria.
+
+**Tecnologia — lacuna mapeada (nov/2026):** o clube se posiciona como inovador e com tecnologia, mas nenhuma tecnologia específica está descrita (o app de reservas é a única registrada). Enquanto o clube não disser quais são — filmagem de jogo, análise de desempenho, sensores, iluminação, o que for —, nenhum texto do site ou do SEO pode prometer "tecnologia". Quando vier, é argumento de venda para as aulas.
 
 **Ausências que não podem ser inventadas:** não há depoimentos, número de membros, preço, mensalidade, premiação de torneio, cobertura de imprensa, parceria ou data de fundação registrados. Nenhum desses fatos existe no projeto — se um trabalho precisar deles, tem de pedir.
 

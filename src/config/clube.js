@@ -55,7 +55,16 @@ export const pendente = (v) => !v || v === PENDENTE
 /** Devolve o href só se o dado por trás dele existir de verdade. */
 export const hrefSeguro = (valor, montar) => (pendente(valor) ? null : montar(valor))
 
-export const urlWhatsapp = () => hrefSeguro(CLUBE.whatsapp, (n) => `https://wa.me/${n}`)
+/**
+ * Conversa no WhatsApp do clube. Com `texto`, a mensagem chega digitada — o
+ * visitante só aperta enviar, e o clube já sabe do que se trata.
+ */
+export const urlWhatsapp = (texto) =>
+  hrefSeguro(CLUBE.whatsapp, (n) => `https://wa.me/${n}${texto ? `?text=${encodeURIComponent(texto)}` : ''}`)
+
+/** Aulas de tênis são agendadas pelo WhatsApp (confirmado pelo clube, nov/2026). */
+export const MENSAGEM_AULA = 'Olá! Quero agendar uma aula de tênis no Sette.'
+export const urlAgendarAula = () => urlWhatsapp(MENSAGEM_AULA)
 export const urlInstagram = () => hrefSeguro(CLUBE.instagram, (h) => `https://instagram.com/${h}`)
 export const urlEmail = () => hrefSeguro(CLUBE.email, (e) => `mailto:${e}`)
 

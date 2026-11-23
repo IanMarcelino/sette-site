@@ -2,12 +2,14 @@ import { motion } from 'framer-motion'
 import { useScrollReveal } from '../hooks/useScrollReveal'
 import Grain from '../components/Grain'
 import AppSette from '../components/AppSette'
+import PerguntasFrequentes from '../components/PerguntasFrequentes'
 import { IconApp } from '../components/BotoesLoja'
 import {
   CLUBE,
   pendente,
   hrefSeguro,
   urlWhatsapp,
+  urlAgendarAula,
   urlInstagram,
   urlEmail,
   temApp,
@@ -57,6 +59,14 @@ function IconInstagram(props) {
       <rect x="3" y="3" width="18" height="18" rx="5" />
       <circle cx="12" cy="12" r="4" />
       <circle cx="17.3" cy="6.7" r="1" fill="currentColor" stroke="none" />
+    </svg>
+  )
+}
+function IconRaquete(props) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" aria-hidden="true" {...props}>
+      <ellipse cx="14.5" cy="9.5" rx="5.5" ry="6.5" transform="rotate(45 14.5 9.5)" />
+      <path d="M10.5 13.5 4 20" />
     </svg>
   )
 }
@@ -136,6 +146,7 @@ const canais = [
 /* ===================== HERO ASSIMÉTRICO ===================== */
 function Hero() {
   const whats = urlWhatsapp()
+  const aula = urlAgendarAula()
 
   return (
     <section className="relative bg-navy min-h-[88svh] grid grid-cols-1 lg:grid-cols-12 overflow-hidden">
@@ -160,8 +171,9 @@ function Hero() {
           </h1>
           <div className="w-16 h-[2px] bg-terracotta-on-dark my-8" />
           <p className="text-sm sm:text-base text-stone-light/85 font-light leading-relaxed font-body max-w-md text-balance">
-            A reserva de quadra se faz pelo app do clube. Se preferir falar com
-            a gente, o WhatsApp continua aberto.
+            A reserva de quadra se faz pelo app do clube. Aulas de tênis se
+            agendam pelo WhatsApp, que também atende quem prefere falar com a
+            gente.
           </p>
 
           {/* O app é o canal de reserva, então ele é o único botão. O WhatsApp
@@ -205,6 +217,27 @@ function Hero() {
                 .
               </span>
             </p>
+
+            {/* Aula tem caminho próprio: a mensagem já chega dizendo do que se
+                trata. Mesmo peso da linha do WhatsApp — o botão principal da
+                página continua sendo o da reserva de quadra. */}
+            {aula && (
+              <p className="mt-3 flex items-center gap-2 text-sm text-stone-light/75 font-light font-body">
+                <IconRaquete className="w-4 h-4 flex-shrink-0 text-terracotta-on-dark" />
+                <span>
+                  Quer ter aula de tênis?{' '}
+                  <a
+                    href={aula}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline underline-offset-4 decoration-1 text-terracotta-on-dark hover:text-cream transition-colors duration-300"
+                  >
+                    Agende pelo WhatsApp
+                  </a>
+                  .
+                </span>
+              </p>
+            )}
           </div>
         </motion.div>
       </div>
@@ -451,6 +484,10 @@ export default function Contato() {
       <AppSette campo="quente" />
       <DetalhesEMapa />
       <Horarios />
+      {/* Horários é `warm` e Canais é `navy`: as perguntas entram em `cream`
+          e a alternância de campo continua. As respostas apontam para o
+          WhatsApp, e o bloco de canais vem logo abaixo. */}
+      <PerguntasFrequentes />
       <Canais />
     </>
   )

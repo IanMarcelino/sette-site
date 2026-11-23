@@ -1,11 +1,12 @@
 import { useEffect, useRef } from 'react'
-import { useAnimation, useInView, useReducedMotion } from 'framer-motion'
+import { useAnimation, useInView } from 'framer-motion'
+import { useMovimentoReduzido } from './useMovimentoReduzido'
 
 export function useScrollReveal(threshold = 0.3) {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, amount: threshold })
   const controls = useAnimation()
-  const semMovimento = useReducedMotion()
+  const semMovimento = useMovimentoReduzido()
 
   useEffect(() => {
     // Sem movimento o conteúdo já entra no estado final: nada de esperar um

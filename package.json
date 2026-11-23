@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && node scripts/prerender.mjs",
     "lint": "eslint .",
     "preview": "vite preview",
+    "indexnow": "node scripts/indexnow.mjs",
     "images": "node scripts/optimize-images.mjs",
     "svg": "svgo -f src/assets -o src/assets --precision=2 --multipass"
   },

@@ -1,8 +1,9 @@
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { useScrollReveal } from '../../hooks/useScrollReveal'
 import { useCarrossel } from '../../hooks/useCarrossel'
 import { tempos } from '../../data/tempos'
 import ControlesCarrossel from '../ControlesCarrossel'
+import { useMovimentoReduzido } from '../../hooks/useMovimentoReduzido'
 
 const ease = [0.25, 0.1, 0.25, 1]
 
@@ -30,7 +31,7 @@ const ARRASTO = 60
 export default function TemposDoDia() {
   const [ref, controls] = useScrollReveal(0.12)
   const { ativo, sentido, ir, andar, aoTeclar } = useCarrossel(tempos.length)
-  const semMovimento = useReducedMotion()
+  const semMovimento = useMovimentoReduzido()
   const atual = tempos[ativo]
 
   // Sem movimento a troca é um corte seco: quem pediu menos animação não quer

@@ -107,7 +107,7 @@ html {
    feedback de hover e foco junto com o resto. O que sai aqui é só o que causa
    desconforto vestibular: o scroll suave e as animações em laço infinito.
    O movimento grande (parallax, reveals, o pin do carrossel) é desligado no JS
-   via `useReducedMotion`, onde dá para trocar deslocamento por fade em vez de
+   via `useMovimentoReduzido`, onde dá para trocar deslocamento por fade em vez de
    simplesmente sumir com a transição de estado. */
 @media (prefers-reduced-motion: reduce) {
   html {

@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { NavLink, Link, useLocation } from 'react-router-dom'
-import { motion, AnimatePresence, useScroll, useTransform, useReducedMotion } from 'framer-motion'
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
 import badgeWhite from '../assets/badge-white.svg'
+import { useMovimentoReduzido } from '../hooks/useMovimentoReduzido'
 
 const links = [
   { to: '/o-clube', label: 'O Clube' },
@@ -15,7 +16,7 @@ export default function Navbar() {
   const bgOpacity = useTransform(scrollY, [0, 200], [0, 0.95])
   const [open, setOpen] = useState(false)
   const location = useLocation()
-  const semMovimento = useReducedMotion()
+  const semMovimento = useMovimentoReduzido()
   const botaoRef = useRef(null)
 
   // Em páginas internas (não a Home) o topo já começa escuro para legibilidade.
